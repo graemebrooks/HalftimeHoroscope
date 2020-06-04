@@ -15,7 +15,14 @@ ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
-api = tweepy.API(auth)
+# Create API object
+api = tweepy.API(auth, wait_on_rate_limit=True,
+    wait_on_rate_limit_notify=True)
+    
+timeline = api.home_timeline()
+for tweet in timeline:
+    print(f"{tweet.user.name} said {tweet.text}")
+
 
 try:
     api.verify_credentials()
